@@ -1,5 +1,10 @@
 package ondemand.parking;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class ParkingSpot {
     String psID;
     String ownerId;
@@ -30,5 +35,17 @@ public class ParkingSpot {
     // TODO: ML price recommendation
     static double recommendPrice(double lon, double lat, long time) {
         return 0;
+    }
+
+    static String toJSON(ParkingSpot ps) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+
+        try {
+            return mapper.writeValueAsString(ps);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
