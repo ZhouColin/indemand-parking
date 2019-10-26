@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ParkingOnDemandApplication {
 
-	static Database db = new Database();
+    static Database db = new Database();
 
-	public static void main(String[] args) {
-		SpringApplication.run(ParkingOnDemandApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ParkingOnDemandApplication.class, args);
+    }
 
 }

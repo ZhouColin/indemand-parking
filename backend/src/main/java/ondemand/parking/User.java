@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 public class User {
@@ -19,7 +18,8 @@ public class User {
     ArrayList<String> psToRate;
 
 
-    User() {}
+    User() {
+    }
 
     User(String username, String password) {
         uID = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
@@ -38,19 +38,20 @@ public class User {
     //reserve a parking spot
     @GetMapping("/reserve")
     static ResponseEntity<String> reserve(@RequestParam String userName, @RequestParam String psID) {
-        ParkingSpot spot = db.getParkingSpot(psID);
         User user = db.getUser(userName);
+        ParkingSpot spot = db.getParkingSpot(psID);
         spot.taken = true;
         user.psToRate.add(psID);
 
-        return new ResponseEntity<String>(HttpStatus.OK);
+        return new ResponseEntity<String>("", HttpStatus.OK);
     }
+
     //rate function, used for someone that wants to rate the seller
     @GetMapping("/rate")
     static ResponseEntity<String> rate(@RequestParam String uID, @RequestParam String psID, @RequestParam double rating) {
 
-        if(rating < 0 || rating > 5) {
-            return new ResponseEntity<>("Rating must be between 0 to 5", HttpStatus.CONFLICT);
+        if (rating < 0 || rating > 5) {
+            return new ResponseEntity<>("Rating must be between 0 to 5", HttpStatus.BAD_REQUEST);
         }
 
         User user = db.getUser(uID);
@@ -58,9 +59,10 @@ public class User {
         String targetID = spot.ownerId;
         User target = db.getUser(targetID);
 
-        double newRating = (target.rating * target.raters + rating)/(target.raters + 1);
+        double newRating = (target.rating * target.raters + rating) / (target.raters + 1);
         target.rating = newRating;
         target.raters++;
+        target.setPsID("");
 
         user.psToRate.remove(psID);
         db.removeParkingSpot(psID);
@@ -96,18 +98,36 @@ public class User {
 
     // List a parking spot on the platform
     @GetMapping("/listSpot")
-    static ResponseEntity<String> listSpot(@RequestParam String uid, @RequestParam double[] location,
-                                           @RequestParam long time, @RequestParam long duration,
-                                           @RequestParam double meterRate) {
+    static ResponseEntity<String> listSpot(@RequestParam String uid, @RequestParam double lon,
+                                           @RequestParam double lat, @RequestParam long time,
+                                           @RequestParam long duration, @RequestParam double meterRate) {
         // Check if user already has a parking spot listed
         User user = db.getUser(uid);
         if (!user.psID.isEmpty()) {
             return new ResponseEntity<>("Cannot list more than one spot at a time", HttpStatus.BAD_REQUEST);
         }
         String psID = UUID.randomUUID().toString();
-        ParkingSpot spot = new ParkingSpot(psID, location, time, duration, meterRate);
+        ParkingSpot spot = new ParkingSpot(psID, lon, lat, time, duration, meterRate);
         db.addParkingSpot(spot);
         user.setPsID(psID);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    // TODO: return JSON of valid parking spots
+    @GetMapping("/view")
+    static ResponseEntity<String> viewReservations(@RequestParam double targetLon, @RequestParam double targetLat,
+                                                   @RequestParam double radius, @RequestParam String sortMethod) {
+        List<ParkingSpot> validSpots = new ArrayList<>();
+        for (ParkingSpot ps : db.getParkingSpots()) {
+            if (validDistance(ps.lon - targetLon, ps.lat - targetLat, radius)) {
+                validSpots.add(ps);
+            }
+        }
+        return new ResponseEntity<>(validSpots.toString(), HttpStatus.OK);
+    }
+
+    // TODO: ensure consistency between distance and radius
+    static boolean validDistance(double x, double y, double radius) {
+        return Math.hypot(x, y) < radius;
     }
 }

@@ -1,7 +1,5 @@
 package ondemand.parking;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.*;
 
 // TODO: Change to directory format and support serializing to disk
@@ -37,5 +35,9 @@ public class Database {
 
     boolean removeParkingSpot(String psID) {
         return parkingSpots.remove(psID) != null;
+    }
+
+    Collection<ParkingSpot> getParkingSpots() {
+        return parkingSpots.values();
     }
 }
