@@ -111,6 +111,7 @@ public class User {
         ParkingSpot spot = new ParkingSpot(psID, uid, lon, lat, time, duration, meterRate);
         db.addParkingSpot(spot);
         user.setPsID(psID);
+        db.addSupplyRecord(new ChurnRecord(lon, lat, time));
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 
@@ -132,6 +133,7 @@ public class User {
         } else if (sortMethod.equals("price")) {
             validSpots.sort((ps1, ps2) -> ps1.price < ps2.price ? -1 : 1);
         }
+        db.addDemandRecord(new ChurnRecord(lon, lat, start));
         return new ResponseEntity<>(validSpots.toString(), HttpStatus.OK);
     }
 
