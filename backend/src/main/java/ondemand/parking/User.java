@@ -108,7 +108,7 @@ public class User {
             return new ResponseEntity<>("Cannot list more than one spot at a time", HttpStatus.BAD_REQUEST);
         }
         String psID = UUID.randomUUID().toString();
-        ParkingSpot spot = new ParkingSpot(psID, lon, lat, time, duration, meterRate);
+        ParkingSpot spot = new ParkingSpot(psID, uid, lon, lat, time, duration, meterRate);
         db.addParkingSpot(spot);
         user.setPsID(psID);
         return new ResponseEntity<>("", HttpStatus.OK);
@@ -116,19 +116,32 @@ public class User {
 
     // TODO: return JSON of valid parking spots
     @GetMapping("/view")
-    static ResponseEntity<String> viewReservations(@RequestParam double targetLon, @RequestParam double targetLat,
+    static ResponseEntity<String> viewReservations(@RequestParam double lon, @RequestParam double lat,
+                                                   @RequestParam long start, @RequestParam long end,
                                                    @RequestParam double radius, @RequestParam String sortMethod) {
         List<ParkingSpot> validSpots = new ArrayList<>();
         for (ParkingSpot ps : db.getParkingSpots()) {
-            if (validDistance(ps.lon - targetLon, ps.lat - targetLat, radius)) {
+            if (validDistance(ps, lon, lat, radius, start, end)) {
                 validSpots.add(ps);
             }
+        }
+        if (sortMethod.equals("closest")) {
+            validSpots.sort((ps1, ps2) -> distance(ps1, lon, lat) < distance(ps2, lon, lat) ? -1 : 1);
+        } else if (sortMethod.equals("meter rate")) {
+            validSpots.sort((ps1, ps2) -> ps1.meterRate < ps2.meterRate ? -1 : 1);
+        } else if (sortMethod.equals("price")) {
+            validSpots.sort((ps1, ps2) -> ps1.price < ps2.price ? -1 : 1);
         }
         return new ResponseEntity<>(validSpots.toString(), HttpStatus.OK);
     }
 
     // TODO: ensure consistency between distance and radius
-    static boolean validDistance(double x, double y, double radius) {
-        return Math.hypot(x, y) < radius;
+    static double distance(ParkingSpot ps, double lon, double lat) {
+        return Math.hypot(ps.lon - lon, ps.lat - lat);
+    }
+
+    static boolean validDistance(ParkingSpot ps, double lon, double lat, double radius, long start, long end) {
+        return distance(ps, lon, lat) < radius
+                && (start < ps.time + ps.duration && ps.time < end);
     }
 }
