@@ -129,63 +129,24 @@ public class User {
                                                    @RequestParam double radius, @RequestParam String sortMethod) {
         List<ParkingSpot> validSpots = new ArrayList<>();
         for (ParkingSpot ps : db.getParkingSpots()) {
-            if (validParkingSpot(ps, lon, lat, radius, start, end)) {
+            if (ParkingSpot.validParkingSpot(ps, lon, lat, radius, start, end)) {
                 validSpots.add(ps);
             }
         }
         if (sortMethod.equals("closest")) {
-            validSpots.sort((ps1, ps2) -> distance(ps1, lon, lat) < distance(ps2, lon, lat) ? -1 : 1);
+            validSpots.sort((ps1, ps2) -> Geolocation.distance(ps1, lon, lat) < Geolocation.distance(ps2, lon, lat) ? -1 : 1);
         } else if (sortMethod.equals("meterRate")) {
             validSpots.sort((ps1, ps2) -> ps1.meterRate < ps2.meterRate ? -1 : 1);
         } else if (sortMethod.equals("price")) {
             validSpots.sort((ps1, ps2) -> ps1.price < ps2.price ? -1 : 1);
         }
         db.addDemandRecord(new ChurnRecord(lon, lat, start));
-        return new ResponseEntity<>(jsonPSList(validSpots), HttpStatus.OK);
+        return new ResponseEntity<>(JSONHelper.jsonPSList(validSpots), HttpStatus.OK);
     }
 
-    static String jsonPSList(List<ParkingSpot> psList) {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("{\"parkingSpots\": [");
-        if (!psList.isEmpty()) {
-            for (ParkingSpot ps : psList) {
-                if (!ps.taken) {
-                    sb.append(ParkingSpot.toJSON(ps));
-                    sb.append(", ");
-                }
-            }
-            sb.delete(sb.length() - 2, sb.length());
-        }
-        sb.append("]}");
-        return sb.toString();
-    }
-
-    //Returns in miles
-    static double distance(ParkingSpot ps, double lon, double lat) {
-
-        double r = 3958.8; //radius of earth
-        double dLon = Math.toRadians(lon - ps.lon);
-        double dLat = Math.toRadians(lat - ps.lat);
-
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(ps.lat)) * Math.cos(Math.toRadians(lat)) *
-                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = r * c;
-        return d;
-
-
-    }
-
-    static boolean validParkingSpot(ParkingSpot ps, double lon, double lat, double radius, long start, long end) {
-        return distance(ps, lon, lat) < radius
-                && (start < ps.time + ps.duration && ps.time < end);
-    }
-
-    @GetMapping("/ml")
-    static void compute() {
-        db.getMLResults();
+    @GetMapping("/parkingClusters")
+    static ResponseEntity<String> parkingClusters(@RequestParam double lon, @RequestParam double lat,
+                                                  @RequestParam double radius) {
+        return new ResponseEntity<>(db.findClusters(lon, lat, radius), HttpStatus.OK);
     }
 }

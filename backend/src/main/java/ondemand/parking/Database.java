@@ -63,27 +63,46 @@ public class Database {
     }
 
     void dumpUsers() {
-        for (String id: users.keySet()) {
+        for (String id : users.keySet()) {
             System.out.println(id);
         }
     }
 
-    // TODO: Parse the results and update corresponding variables
-    void getMLResults() {
+    // Load parking spots from ChurnRecords
+    String findClusters(double lon, double lat, double radius) {
+        ArrayList<ChurnRecord>[] data = new ArrayList[2];
+        data[0] = new ArrayList<>();
+        data[1] = new ArrayList<>();
+
+
+        for (ChurnRecord s : supply) {
+            if (Geolocation.distance(s, lon, lat) < radius) {
+                data[0].add(s);
+            }
+        }
+        for (ChurnRecord d : demand) {
+            if (Geolocation.distance(d, lon, lat) < radius) {
+                data[1].add(d);
+            }
+        }
+        return getClusters(data);
+    }
+
+    // TODO: Verify that clusters on supply are received
+    String getClusters(List<ChurnRecord>[] data) {
         HttpURLConnection conn = null;
         DataOutputStream os = null;
+
+        String response = "";
         try {
             URL url = new URL("http://127.0.0.1:5000/data");
-            ArrayList<ArrayList<ChurnRecord>> data = new ArrayList<ArrayList<ChurnRecord>>();
-            data.add(supply);
-            data.add(demand);
             String json = new Gson().toJson(data);
             byte[] postData = json.getBytes(StandardCharsets.UTF_8);
             conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty( "charset", "utf-8");
+            conn.setRequestProperty("charset", "utf-8");
             conn.setRequestProperty("Content-Length", Integer.toString(json.length()));
             os = new DataOutputStream(conn.getOutputStream());
             os.write(postData);
@@ -95,16 +114,15 @@ public class Database {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
-            String response = "";
-            for (String line; (line = br.readLine()) != null; response += line);
+            for (String line; (line = br.readLine()) != null; response += line) ;
             conn.disconnect();
         } catch (IOException ignored) {
         } finally {
             if (conn != null) {
                 conn.disconnect();
             }
+            return response;
         }
-
     }
 }
 

@@ -1,10 +1,5 @@
 package ondemand.parking;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class ParkingSpot {
     String psID;
     String ownerId;
@@ -32,20 +27,13 @@ public class ParkingSpot {
         ParkingOnDemandApplication.db.addParkingSpot(this);
     }
 
+    static boolean validParkingSpot(ParkingSpot ps, double lon, double lat, double radius, long start, long end) {
+        return Geolocation.distance(ps, lon, lat) < radius
+                && (start < ps.time + ps.duration && ps.time < end);
+    }
+
     // TODO: ML price recommendation
     static double recommendPrice(double lon, double lat, long time) {
         return 0;
-    }
-
-    static String toJSON(ParkingSpot ps) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-
-        try {
-            return mapper.writeValueAsString(ps);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }
