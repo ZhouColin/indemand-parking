@@ -183,4 +183,9 @@ public class User {
         return distance(ps, lon, lat) < radius
                 && (start < ps.time + ps.duration && ps.time < end);
     }
+
+    @GetMapping("/ml")
+    static void compute() {
+        db.getMLResults();
+    }
 }

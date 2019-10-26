@@ -7,8 +7,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -97,11 +95,10 @@ public class Database {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
-            String output = br.toString();
-            // Parse the output to convert to actual data type
+            String response = "";
+            for (String line; (line = br.readLine()) != null; response += line);
             conn.disconnect();
-        } catch (IOException e) {
-            return;
+        } catch (IOException ignored) {
         } finally {
             if (conn != null) {
                 conn.disconnect();
