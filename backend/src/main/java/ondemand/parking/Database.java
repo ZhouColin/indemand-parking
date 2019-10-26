@@ -1,5 +1,16 @@
 package ondemand.parking;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 // TODO: Change to directory format and support serializing to disk
@@ -7,8 +18,8 @@ public class Database {
 
     private HashMap<String, User> users;
     private HashMap<String, ParkingSpot> parkingSpots;
-    private List<ChurnRecord> supply;
-    private List<ChurnRecord> demand;
+    private ArrayList<ChurnRecord> supply;
+    private ArrayList<ChurnRecord> demand;
 
     Database() {
         users = new HashMap<>();
@@ -57,6 +68,46 @@ public class Database {
         for (String id: users.keySet()) {
             System.out.println(id);
         }
+    }
+
+    // TODO: Parse the results and update corresponding variables
+    void getMLResults() {
+        HttpURLConnection conn = null;
+        DataOutputStream os = null;
+        try {
+            URL url = new URL("http://127.0.0.1:5000/data");
+            ArrayList<ArrayList<ChurnRecord>> data = new ArrayList<ArrayList<ChurnRecord>>();
+            data.add(supply);
+            data.add(demand);
+            String json = new Gson().toJson(data);
+            byte[] postData = json.getBytes(StandardCharsets.UTF_8);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty( "charset", "utf-8");
+            conn.setRequestProperty("Content-Length", Integer.toString(json.length()));
+            os = new DataOutputStream(conn.getOutputStream());
+            os.write(postData);
+            os.flush();
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + conn.getResponseCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (conn.getInputStream())));
+            String output = br.toString();
+            // Parse the output to convert to actual data type
+            conn.disconnect();
+        } catch (IOException e) {
+            return;
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+
     }
 }
 
