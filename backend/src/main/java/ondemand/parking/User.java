@@ -122,7 +122,7 @@ public class User {
                                                    @RequestParam double radius, @RequestParam String sortMethod) {
         List<ParkingSpot> validSpots = new ArrayList<>();
         for (ParkingSpot ps : db.getParkingSpots()) {
-            if (validDistance(ps, lon, lat, radius, start, end)) {
+            if (validParkingSpot(ps, lon, lat, radius, start, end)) {
                 validSpots.add(ps);
             }
         }
@@ -137,12 +137,25 @@ public class User {
         return new ResponseEntity<>(validSpots.toString(), HttpStatus.OK);
     }
 
-    // TODO: ensure consistency between distance and radius
+    //Returns in miles
     static double distance(ParkingSpot ps, double lon, double lat) {
-        return Math.hypot(ps.lon - lon, ps.lat - lat);
+        
+        double r = 3958.8; //radius of earth
+        double dLon = Math.toRadians(lon - ps.lon);
+        double dLat = Math.toRadians(lat - ps.lat);
+
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(ps.lat)) * Math.cos(Math.toRadians(lat)) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2);
+
+        double c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double d = r * c;
+        return d;
+
+
     }
 
-    static boolean validDistance(ParkingSpot ps, double lon, double lat, double radius, long start, long end) {
+    static boolean validParkingSpot(ParkingSpot ps, double lon, double lat, double radius, long start, long end) {
         return distance(ps, lon, lat) < radius
                 && (start < ps.time + ps.duration && ps.time < end);
     }
