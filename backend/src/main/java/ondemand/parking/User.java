@@ -115,6 +115,7 @@ public class User {
             return new ResponseEntity<>("Cannot list more than one spot at a time", HttpStatus.BAD_REQUEST);
         }
         String psID = UUID.randomUUID().toString();
+
         ParkingSpot spot = new ParkingSpot(psID, uID, lon, lat, time, duration, meterRate);
         db.addParkingSpot(spot);
         user.setPsID(psID);
@@ -175,8 +176,6 @@ public class User {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double d = r * c;
         return d;
-
-
     }
 
     static boolean validParkingSpot(ParkingSpot ps, double lon, double lat, double radius, long start, long end) {
