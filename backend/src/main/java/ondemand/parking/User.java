@@ -36,6 +36,7 @@ public class User {
     }
 
     //reserve a parking spot
+    @GetMapping("/reserve")
     static ResponseEntity<String> reserve(@RequestParam String userName, @RequestParam String psID) {
         ParkingSpot spot = db.getParkingSpot(psID);
         User user = db.getUser(userName);
@@ -62,6 +63,7 @@ public class User {
         target.raters++;
 
         user.psToRate.remove(psID);
+        db.removeParkingSpot(psID);
 
         return new ResponseEntity<String>(Double.toString(target.rating), HttpStatus.OK);
         //after reservation

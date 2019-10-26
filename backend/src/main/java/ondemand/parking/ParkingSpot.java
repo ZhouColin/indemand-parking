@@ -19,4 +19,6 @@ public class ParkingSpot {
 
         ParkingOnDemandApplication.db.addParkingSpot(this);
     }
+
+
 }
