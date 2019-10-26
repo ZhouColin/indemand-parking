@@ -7,10 +7,14 @@ public class Database {
 
     private HashMap<String, User> users;
     private HashMap<String, ParkingSpot> parkingSpots;
+    private List<ChurnRecord> supply;
+    private List<ChurnRecord> demand;
 
     Database() {
         users = new HashMap<>();
         parkingSpots = new HashMap<>();
+        supply = new ArrayList<>();
+        demand = new ArrayList<>();
     }
 
     boolean addUser(User u) {
@@ -41,9 +45,29 @@ public class Database {
         return parkingSpots.values();
     }
 
+    boolean addSupplyRecord(ChurnRecord record) {
+        return supply.add(record);
+    }
+
+    boolean addDemandRecord(ChurnRecord record) {
+        return demand.add(record);
+    }
+
     void dumpUsers() {
         for (String id: users.keySet()) {
             System.out.println(id);
         }
+    }
+}
+
+class ChurnRecord {
+    double lon;
+    double lat;
+    long time;
+
+    ChurnRecord(double lon, double lat, long time) {
+        this.lon = lon;
+        this.lat = lat;
+        this.time = time;
     }
 }
