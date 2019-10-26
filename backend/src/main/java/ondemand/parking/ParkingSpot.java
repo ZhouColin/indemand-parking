@@ -10,11 +10,12 @@ public class ParkingSpot {
     boolean taken;
 
 
-    ParkingSpot(double[] location, long time, long duration, double m) {
+    ParkingSpot(String psID, double[] location, long time, long duration, double meterPrice) {
+        this.psID = psID;
         this.location = location;
         this.time = time;
         this.duration = duration;
-        this.meterRate = m;
+        this.meterRate = meterPrice;
 
         ParkingOnDemandApplication.db.addParkingSpot(this);
     }

@@ -26,9 +26,13 @@ public class User {
         rating = 0;
         raters = 0;
 
-        ParkingOnDemandApplication.db.addUser(this);
+        db.addUser(this);
 
         psToRate = new ArrayList<String>();
+    }
+
+    public void setPsID(String psID) {
+        this.psID = psID;
     }
 
     //reserve a parking spot
@@ -86,5 +90,22 @@ public class User {
             return new ResponseEntity<>("Incorrect Username or Password", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(uID, HttpStatus.OK);
+    }
+
+    // List a parking spot on the platform
+    @GetMapping("/listSpot")
+    static ResponseEntity<String> listSpot(@RequestParam String uid, @RequestParam double[] location,
+                                           @RequestParam long time, @RequestParam long duration,
+                                           @RequestParam double meterRate) {
+        // Check if user already has a parking spot listed
+        User user = db.getUser(uid);
+        if (!user.psID.isEmpty()) {
+            return new ResponseEntity<>("Cannot list more than one spot at a time", HttpStatus.BAD_REQUEST);
+        }
+        String psID = UUID.randomUUID().toString();
+        ParkingSpot spot = new ParkingSpot(psID, location, time, duration, meterRate);
+        db.addParkingSpot(spot);
+        user.setPsID(psID);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
