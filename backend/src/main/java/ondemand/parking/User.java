@@ -55,8 +55,8 @@ public class User {
     @GetMapping("/rate")
     static ResponseEntity<String> rate(@RequestParam String uID, @RequestParam String psID, @RequestParam double rating) {
 
-        if (rating < 0 || rating > 5) {
-            return new ResponseEntity<>("Rating must be between 0 to 5", HttpStatus.BAD_REQUEST);
+        if (rating != 1 && rating != 0) {
+            return new ResponseEntity<>("Rating not valid", HttpStatus.BAD_REQUEST);
         }
 
         User user = db.getUser(uID);
@@ -115,6 +115,7 @@ public class User {
             return new ResponseEntity<>("Cannot list more than one spot at a time", HttpStatus.BAD_REQUEST);
         }
         String psID = UUID.randomUUID().toString();
+
         ParkingSpot spot = new ParkingSpot(psID, uID, lon, lat, time, duration, meterRate);
         db.addParkingSpot(spot);
         user.setPsID(psID);
