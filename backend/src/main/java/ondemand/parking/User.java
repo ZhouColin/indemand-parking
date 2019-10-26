@@ -5,7 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.UUID;
+
+import java.util.*;
 
 @RestController
 public class User {
@@ -14,39 +15,68 @@ public class User {
     String psID;
     double rating;
     double raters;
+    ArrayList<String> psToRate;
 
-    User() {}
+
+    User() {
+    }
 
     User(String username, String password) {
         uID = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
         rating = 0;
         raters = 0;
 
-        ParkingOnDemandApplication.db.addUser(this);
+        db.addUser(this);
+
+        psToRate = new ArrayList<String>();
     }
 
+    public void setPsID(String psID) {
+        this.psID = psID;
+    }
+
+    //reserve a parking spot
+    @GetMapping("/reserve")
+    static ResponseEntity<String> reserve(@RequestParam String userName, @RequestParam String psID) {
+        User user = db.getUser(userName);
+        ParkingSpot spot = db.getParkingSpot(psID);
+        spot.taken = true;
+        user.psToRate.add(psID);
+
+        return new ResponseEntity<String>("", HttpStatus.OK);
+    }
 
     //rate function, used for someone that wants to rate the seller
-    static ResponseEntity<String> rate(@RequestParam String name, @RequestParam double rating) {
-        if(rating < 0 || rating > 5) {
-            return new ReponseEntity<>("Rating must be between 0 to 5", HttpStatus.CONFLICT);
+    @GetMapping("/rate")
+    static ResponseEntity<String> rate(@RequestParam String uID, @RequestParam String psID, @RequestParam double rating) {
+
+        if (rating < 0 || rating > 5) {
+            return new ResponseEntity<>("Rating must be between 0 to 5", HttpStatus.BAD_REQUEST);
         }
 
-        User target = db.getUser(name);
-        double newRating = (target.rating * target.raters + rating)/(target.raters + 1);
+        User user = db.getUser(uID);
+        ParkingSpot spot = db.getParkingSpot(psID);
+        String targetID = spot.ownerId;
+        User target = db.getUser(targetID);
+
+        double newRating = (target.rating * target.raters + rating) / (target.raters + 1);
         target.rating = newRating;
         target.raters++;
+        target.setPsID("");
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        user.psToRate.remove(psID);
+        db.removeParkingSpot(psID);
+
+        return new ResponseEntity<String>(Double.toString(target.rating), HttpStatus.OK);
         //after reservation
         //return a my trips and person that rented to you
         //list a names of
     }
 
 
-    // Login function, creates a new user if necessary
-    @GetMapping("/login")
-    static ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+    // Signup function, creates a new user if it is a valid username
+    @GetMapping("/signup")
+    static ResponseEntity<String> signup(@RequestParam String username, @RequestParam String password) {
         String uID = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
 
         if (!db.userExists(uID)) {
@@ -54,5 +84,50 @@ public class User {
             return new ResponseEntity<>(uID, HttpStatus.OK);
         }
         return new ResponseEntity<>("Username In Use", HttpStatus.BAD_REQUEST);
+    }
+
+    // Login Function, authenticates the user
+    @GetMapping("/login")
+    static ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+        String uID = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
+        if (db.userExists(uID)) {
+            return new ResponseEntity<>("Incorrect Username or Password", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(uID, HttpStatus.OK);
+    }
+
+    // List a parking spot on the platform
+    @GetMapping("/listSpot")
+    static ResponseEntity<String> listSpot(@RequestParam String uid, @RequestParam double lon,
+                                           @RequestParam double lat, @RequestParam long time,
+                                           @RequestParam long duration, @RequestParam double meterRate) {
+        // Check if user already has a parking spot listed
+        User user = db.getUser(uid);
+        if (!user.psID.isEmpty()) {
+            return new ResponseEntity<>("Cannot list more than one spot at a time", HttpStatus.BAD_REQUEST);
+        }
+        String psID = UUID.randomUUID().toString();
+        ParkingSpot spot = new ParkingSpot(psID, lon, lat, time, duration, meterRate);
+        db.addParkingSpot(spot);
+        user.setPsID(psID);
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    // TODO: return JSON of valid parking spots
+    @GetMapping("/view")
+    static ResponseEntity<String> viewReservations(@RequestParam double targetLon, @RequestParam double targetLat,
+                                                   @RequestParam double radius, @RequestParam String sortMethod) {
+        List<ParkingSpot> validSpots = new ArrayList<>();
+        for (ParkingSpot ps : db.getParkingSpots()) {
+            if (validDistance(ps.lon - targetLon, ps.lat - targetLat, radius)) {
+                validSpots.add(ps);
+            }
+        }
+        return new ResponseEntity<>(validSpots.toString(), HttpStatus.OK);
+    }
+
+    // TODO: ensure consistency between distance and radius
+    static boolean validDistance(double x, double y, double radius) {
+        return Math.hypot(x, y) < radius;
     }
 }

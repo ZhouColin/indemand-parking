@@ -36,4 +36,8 @@ public class Database {
     boolean removeParkingSpot(String psID) {
         return parkingSpots.remove(psID) != null;
     }
+
+    Collection<ParkingSpot> getParkingSpots() {
+        return parkingSpots.values();
+    }
 }
