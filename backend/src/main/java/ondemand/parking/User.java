@@ -27,17 +27,18 @@ public class User {
 
 
     //rate function, used for someone that wants to rate the seller
-    static ResponseEntity<String> rate(@RequestParam String name, @RequestParam double rating) {
+    @GetMapping("/rate")
+    static ResponseEntity<String> rate(@RequestParam String uid, @RequestParam double rating) {
         if(rating < 0 || rating > 5) {
-            return new ReponseEntity<>("Rating must be between 0 to 5", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Rating must be between 0 to 5", HttpStatus.CONFLICT);
         }
 
-        User target = db.getUser(name);
+        User target = db.getUser(uid);
         double newRating = (target.rating * target.raters + rating)/(target.raters + 1);
         target.rating = newRating;
         target.raters++;
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<String>(Double.toString(target.rating), HttpStatus.OK);
         //after reservation
         //return a my trips and person that rented to you
         //list a names of
