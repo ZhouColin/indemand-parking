@@ -45,9 +45,9 @@ public class User {
     }
 
 
-    // Login function, creates a new user if necessary
-    @GetMapping("/login")
-    static ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+    // Signup function, creates a new user if it is a valid username
+    @GetMapping("/signup")
+    static ResponseEntity<String> signup(@RequestParam String username, @RequestParam String password) {
         String uID = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
 
         if (!db.userExists(uID)) {
@@ -55,5 +55,15 @@ public class User {
             return new ResponseEntity<>(uID, HttpStatus.OK);
         }
         return new ResponseEntity<>("Username In Use", HttpStatus.BAD_REQUEST);
+    }
+
+    // Login Function, authenticates the user
+    @GetMapping("/login")
+    static ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+        String uID = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
+        if (db.userExists(uID)) {
+            return new ResponseEntity<>("Incorrect Username or Password", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(uID, HttpStatus.OK);
     }
 }
