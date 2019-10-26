@@ -40,4 +40,10 @@ public class Database {
     Collection<ParkingSpot> getParkingSpots() {
         return parkingSpots.values();
     }
+
+    void dumpUsers() {
+        for (String id: users.keySet()) {
+            System.out.println(id);
+        }
+    }
 }

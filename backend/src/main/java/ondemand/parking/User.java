@@ -25,6 +25,7 @@ public class User {
         uID = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
         rating = 0;
         raters = 0;
+        psID = "";
 
         db.addUser(this);
 
@@ -80,7 +81,7 @@ public class User {
         String uID = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
 
         if (!db.userExists(uID)) {
-            new User(username, password);
+            db.addUser(new User(username, password));
             return new ResponseEntity<>(uID, HttpStatus.OK);
         }
         return new ResponseEntity<>("Username In Use", HttpStatus.BAD_REQUEST);
@@ -90,7 +91,7 @@ public class User {
     @GetMapping("/login")
     static ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
         String uID = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
-        if (db.userExists(uID)) {
+        if (!db.userExists(uID)) {
             return new ResponseEntity<>("Incorrect Username or Password", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(uID, HttpStatus.OK);
