@@ -109,7 +109,6 @@ public class User {
         }
         return new ResponseEntity<>(uID, HttpStatus.OK);
     }
-
     // List a parking spot on the platform
     @GetMapping("/listSpot")
     static ResponseEntity<String> listSpot(@RequestParam String uID, @RequestParam double lon,

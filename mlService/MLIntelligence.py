@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify, make_response
 import logging
 import pandas as pd, numpy as np
-import geopandas as gpd
+import random
+#import geopandas as gpd
 import folium
 from folium.plugins import HeatMap
 import os
 import os.path
+
 
 
 app = Flask(__name__)
@@ -45,10 +47,10 @@ def clustering(data, lon, lat, radius):
 
 		weights = [1 for i in range(len(coordinateList))]
 		coords = list(zip([c.lat for c in coordinateList], [c.lon for c in coordinateList], weights))
+		print(coords)
 		#coords = pd.as_matrix(coords)
-
 		outputMap = folium.Map(location=[lat, lon])
-		hmap = HeatMap(coords, max_val = 1, radius = radius, blur = 15, min_opacity = .2)
+		hmap = HeatMap(coords, max_value = 1, min_opacity = .5)
 
 		outputMap.add_child(hmap)
 
@@ -56,9 +58,7 @@ def clustering(data, lon, lat, radius):
 		outputMap.save(str(lat)+str(lon) + ".html")
 
 
-
 	clusterHeatMap(supply)
-
 
 	'''
 	def findCluster(coordinateList):
@@ -91,8 +91,15 @@ def clustering(data, lon, lat, radius):
 
 	'''
 
+#x = [[random.uniform(37.50, 38), random.uniform(-122.3, -122.2)] for i in range(100)]
+
+#clusterHeatMap(x, 37.873229, -122.273590, 1)
+
+#37.895908, 37.856463
+
+#-122.290828, -122.256491
+
 
 if __name__ == '__main__':
 	app.run(debug=True)
-
 
