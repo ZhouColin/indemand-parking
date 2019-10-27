@@ -1,0 +1,418 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AC3A30082364F18300629F5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3A30072364F18300629F5C /* AppDelegate.swift */; };
+		AC3A300A2364F18300629F5C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3A30092364F18300629F5C /* SceneDelegate.swift */; };
+		AC3A300C2364F18300629F5C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3A300B2364F18300629F5C /* ContentView.swift */; };
+		AC3A300E2364F18400629F5C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC3A300D2364F18400629F5C /* Assets.xcassets */; };
+		AC3A30112364F18400629F5C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC3A30102364F18400629F5C /* Preview Assets.xcassets */; };
+		AC3A30142364F18400629F5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC3A30122364F18400629F5C /* LaunchScreen.storyboard */; };
+		F136FB44408FA93EEAD93FC7 /* Pods_sdl_parking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A5D3AFBB427D77A5693C32E /* Pods_sdl_parking.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0A5D3AFBB427D77A5693C32E /* Pods_sdl_parking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_sdl_parking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BE3F98E0822E892DF14F67A /* Pods-sdl-parking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sdl-parking.release.xcconfig"; path = "Target Support Files/Pods-sdl-parking/Pods-sdl-parking.release.xcconfig"; sourceTree = "<group>"; };
+		A6BB8C6160B921677830CF1C /* Pods-sdl-parking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sdl-parking.debug.xcconfig"; path = "Target Support Files/Pods-sdl-parking/Pods-sdl-parking.debug.xcconfig"; sourceTree = "<group>"; };
+		AC3A30042364F18300629F5C /* sdl-parking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "sdl-parking.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC3A30072364F18300629F5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AC3A30092364F18300629F5C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		AC3A300B2364F18300629F5C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AC3A300D2364F18400629F5C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AC3A30102364F18400629F5C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AC3A30132364F18400629F5C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AC3A30152364F18400629F5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AC3A30012364F18300629F5C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F136FB44408FA93EEAD93FC7 /* Pods_sdl_parking.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4A37AB2164E88122A3653543 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0A5D3AFBB427D77A5693C32E /* Pods_sdl_parking.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AC3A2FFB2364F18300629F5C = {
+			isa = PBXGroup;
+			children = (
+				AC3A30062364F18300629F5C /* sdl-parking */,
+				AC3A30052364F18300629F5C /* Products */,
+				CB1D2BA2F27BEA49B2122A1F /* Pods */,
+				4A37AB2164E88122A3653543 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		AC3A30052364F18300629F5C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AC3A30042364F18300629F5C /* sdl-parking.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AC3A30062364F18300629F5C /* sdl-parking */ = {
+			isa = PBXGroup;
+			children = (
+				AC3A30072364F18300629F5C /* AppDelegate.swift */,
+				AC3A30092364F18300629F5C /* SceneDelegate.swift */,
+				AC3A300B2364F18300629F5C /* ContentView.swift */,
+				AC3A300D2364F18400629F5C /* Assets.xcassets */,
+				AC3A30122364F18400629F5C /* LaunchScreen.storyboard */,
+				AC3A30152364F18400629F5C /* Info.plist */,
+				AC3A300F2364F18400629F5C /* Preview Content */,
+			);
+			path = "sdl-parking";
+			sourceTree = "<group>";
+		};
+		AC3A300F2364F18400629F5C /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				AC3A30102364F18400629F5C /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CB1D2BA2F27BEA49B2122A1F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A6BB8C6160B921677830CF1C /* Pods-sdl-parking.debug.xcconfig */,
+				3BE3F98E0822E892DF14F67A /* Pods-sdl-parking.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AC3A30032364F18300629F5C /* sdl-parking */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AC3A30182364F18400629F5C /* Build configuration list for PBXNativeTarget "sdl-parking" */;
+			buildPhases = (
+				EF402F0BBB2CB94AB9D3E393 /* [CP] Check Pods Manifest.lock */,
+				AC3A30002364F18300629F5C /* Sources */,
+				AC3A30012364F18300629F5C /* Frameworks */,
+				AC3A30022364F18300629F5C /* Resources */,
+				044B1B8599AE5E251AAA2167 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "sdl-parking";
+			productName = "sdl-parking";
+			productReference = AC3A30042364F18300629F5C /* sdl-parking.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AC3A2FFC2364F18300629F5C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1110;
+				LastUpgradeCheck = 1110;
+				ORGANIZATIONNAME = "Colin Zhou";
+				TargetAttributes = {
+					AC3A30032364F18300629F5C = {
+						CreatedOnToolsVersion = 11.1;
+					};
+				};
+			};
+			buildConfigurationList = AC3A2FFF2364F18300629F5C /* Build configuration list for PBXProject "sdl-parking" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AC3A2FFB2364F18300629F5C;
+			productRefGroup = AC3A30052364F18300629F5C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AC3A30032364F18300629F5C /* sdl-parking */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AC3A30022364F18300629F5C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC3A30142364F18400629F5C /* LaunchScreen.storyboard in Resources */,
+				AC3A30112364F18400629F5C /* Preview Assets.xcassets in Resources */,
+				AC3A300E2364F18400629F5C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		044B1B8599AE5E251AAA2167 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-sdl-parking/Pods-sdl-parking-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-sdl-parking/Pods-sdl-parking-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-sdl-parking/Pods-sdl-parking-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EF402F0BBB2CB94AB9D3E393 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-sdl-parking-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AC3A30002364F18300629F5C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC3A30082364F18300629F5C /* AppDelegate.swift in Sources */,
+				AC3A300A2364F18300629F5C /* SceneDelegate.swift in Sources */,
+				AC3A300C2364F18300629F5C /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		AC3A30122364F18400629F5C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AC3A30132364F18400629F5C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AC3A30162364F18400629F5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AC3A30172364F18400629F5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AC3A30192364F18400629F5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6BB8C6160B921677830CF1C /* Pods-sdl-parking.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"sdl-parking/Preview Content\"";
+				DEVELOPMENT_TEAM = QDKMBCK8ZF;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "sdl-parking/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Colin-Zhou.sdl-parking";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AC3A301A2364F18400629F5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3BE3F98E0822E892DF14F67A /* Pods-sdl-parking.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"sdl-parking/Preview Content\"";
+				DEVELOPMENT_TEAM = QDKMBCK8ZF;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "sdl-parking/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Colin-Zhou.sdl-parking";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AC3A2FFF2364F18300629F5C /* Build configuration list for PBXProject "sdl-parking" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC3A30162364F18400629F5C /* Debug */,
+				AC3A30172364F18400629F5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AC3A30182364F18400629F5C /* Build configuration list for PBXNativeTarget "sdl-parking" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC3A30192364F18400629F5C /* Debug */,
+				AC3A301A2364F18400629F5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AC3A2FFC2364F18300629F5C /* Project object */;
+}

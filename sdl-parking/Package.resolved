@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "SmartDeviceLink",
+        "repositoryURL": "https://github.com/smartdevicelink/sdl_ios.git",
+        "state": {
+          "branch": null,
+          "revision": "734db0c69305f5d7cf8b0884a607e7b421be9085",
+          "version": "6.3.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

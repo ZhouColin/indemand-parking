@@ -1,0 +1,6 @@
+framework module Pods_sdl_parking {
+  umbrella header "Pods-sdl-parking-umbrella.h"
+
+  export *
+  module * { export * }
+}

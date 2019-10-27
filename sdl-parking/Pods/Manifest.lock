@@ -1,0 +1,23 @@
+PODS:
+  - BiSON (1.2.0)
+  - SmartDeviceLink (6.3.1):
+    - BiSON (~> 1.2.0)
+    - SmartDeviceLink/Default (= 6.3.1)
+  - SmartDeviceLink/Default (6.3.1):
+    - BiSON (~> 1.2.0)
+
+DEPENDENCIES:
+  - SmartDeviceLink (~> 6.3.1)
+
+SPEC REPOS:
+  trunk:
+    - BiSON
+    - SmartDeviceLink
+
+SPEC CHECKSUMS:
+  BiSON: 1165a5486ee9755400b096cf374e1f03cb73a980
+  SmartDeviceLink: 7239247b538b8fc9d60e36de7a9da30f7d51bcff
+
+PODFILE CHECKSUM: 989508428a6b4843f58ef81161cdaddc7e820787
+
+COCOAPODS: 1.8.4
