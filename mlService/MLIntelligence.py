@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
-from sklearn.cluster import DBSCAN
-import pandas as pd, numpy as np, matplotlib.pyplot as pyplot
-from geopy.distance import great_circle
-from shapely.geometry import MultiPoint
+
+import pandas as pd, numpy as np
+import geopandas as gpd
+import folium
+from folium.plugins import HeatMap
+import os
+import os.path
 
 
 app = Flask(__name__)
@@ -17,7 +20,7 @@ def getData():
 # Do your ML stuff here
 # Assumes that you parse the json data that we received from Java
 # No need to store return values as a json file, this will be done by caller
-def clustering(data):
+def clustering(data, lat, lon, radius):
 
 	database = pd.DataFrame(list(JSON.parse(data).items()))
 	'''
@@ -31,6 +34,26 @@ def clustering(data):
 	supply = database[:0]
 	demand = database[:1]
 
+	def clusterHeatMap(coordinateList):
+
+		weights = [1 for i in range(len(coordinateList))]
+		coords = list(zip([c.lat for c in coordinateList], [c.lon for c in coordinateList], weights))
+		#coords = pd.as_matrix(coords)
+
+		outputMap = folium.Map(location=[lat, lon])
+		hmap = HeatMap(coords, max_val = 1, radius = radius, blur = 15, min_opacity = .2)
+
+		outputMap.add_child(hmap)
+
+		os.chdir("..\\backend\\heatmaps")
+		outputMap.save(str(lat)+str(lon) + ".html")
+
+
+
+	clusterHeatMap(supply)
+
+
+	'''
 	def findCluster(coordinateList):
 
 		coords = zip([c.lat for c in coordinateList], [c.lon for c in coordinateList])
@@ -60,37 +83,6 @@ def clustering(data):
 	return [findCluster(supply), findCluster(demand)]
 
 	'''
-	lats, lons = zip(*centermost_points)
-	rep_points = pd.DataFrame({'lon':lons, 'lat':lats})
-	'''
-
-	'''
-	# choose k random indices in database to be centroids
-	centroidIndices = [randint(0, demand.len() - 1) for i in range(k)]
-	#List of each cluster's centroid object
-	centroids = [database[centroidIndices[i]] for i in range(k)]
-	#Maps centroid to its index number in centroids list (for convenience)
-	#possible error where lists are too long for 'zip', shd check
-	clusterIndex = dict(zip(centroids, [x for x in range(k)]))
-	#List of elements in each cluster
-	#ith cluster's centroid will be ith element in 'centroids'
-	clusters = [[centroids] for i in range(k)]
-
-	optimal = False
-
-	while(!optimal):	
-		#Assignment
-		for churnRecord in demand:
-			closestCentroid = min(centroids, key = lambda c: coordToDistance(churnRecord, c))
-			clusters[clusterIndex[closestCentroid]].append(churnRecord)
-
-		#Update
-		updatedCentroids = [mean]
-
-
-		#Check if optimal
-		
-	'''		
 
 
 
