@@ -30,32 +30,20 @@ def getData():
 	return make_response(jsonify(results), 200)
 
 
-def clustering(data, lon, lat, radius):
-	database = pd.DataFrame(list(JSON.parse(data).items()))
-	'''
-		Contents of the database are ChurnRecord Class
-		ChurnRecord Class:
-			double lon;
-	    	double lat;
-	    	long time;
-	'''
-
-	supply = database[:0]
-	demand = database[:1]
+def clustering(supply, demand, lon, lat, radius):
 
 	def clusterHeatMap(coordinateList):
 
 		weights = [1 for i in range(len(coordinateList))]
-		coords = list(zip([c.lat for c in coordinateList], [c.lon for c in coordinateList], weights))
-		print(coords)
-		#coords = pd.as_matrix(coords)
+
+		coords = list(zip([c['lat'] for c in coordinateList], [c['lon'] for c in coordinateList], weights))
 		outputMap = folium.Map(location=[lat, lon])
 		hmap = HeatMap(coords, max_value = 1, min_opacity = .5)
 
 		outputMap.add_child(hmap)
 
 		os.chdir("..\\backend\\heatmaps")
-		outputMap.save(str(lat)+str(lon) + ".html")
+		outputMap.save("lat" + str(lat) + "lon" + str(lon) + ".html")
 
 
 	clusterHeatMap(supply)
