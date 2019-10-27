@@ -1,5 +1,5 @@
-from flask import Flask, request, jsonify
-
+from flask import Flask, request, jsonify, make_response
+import logging
 import pandas as pd, numpy as np
 import geopandas as gpd
 import folium
@@ -10,18 +10,25 @@ import os.path
 
 app = Flask(__name__)
 
-@app.route('/data', methods=['GET'])
+@app.route('/data', methods=['POST'])
 def getData():
-	data = request.get_json()
-	results = clustering(data)
-	return jsonify(results)
+	jsonData = request.get_json()
+	logging.warning(jsonData)
+
+	''' Supply and demand are a list of dictionaries, each dictionary contains the following:
+		{'lon': LON_VALUE, 'lat': LAT_VALUE, 'time': TIME_VALUE}
+	'''
+	supply = jsonData['data'][0]
+	demand = jsonData['data'][1]
+	lon = jsonData['lon']
+	lat = jsonData['lat']
+	radius = jsonData['radius']
+	# Modify this as needed for clustering
+	results = clustering(supply, demand, lon, lat, radius)
+	return make_response(jsonify(results), 200)
 
 
-# Do your ML stuff here
-# Assumes that you parse the json data that we received from Java
-# No need to store return values as a json file, this will be done by caller
-def clustering(data, lat, lon, radius):
-
+def clustering(data, lon, lat, radius):
 	database = pd.DataFrame(list(JSON.parse(data).items()))
 	'''
 		Contents of the database are ChurnRecord Class
@@ -72,9 +79,9 @@ def clustering(data, lat, lon, radius):
 
 
 		def getCenter(cluster):
-	    	centroid = (MultiPoint(cluster).centroid.x, MultiPoint(cluster).centroid.y)
-	    	centermost_point = min(cluster, key=lambda point: great_circle(point, centroid).m)
-	    	return tuple(centermost_point)
+			centroid = (MultiPoint(cluster).centroid.x, MultiPoint(cluster).centroid.y)
+			centermost_point = min(cluster, key=lambda point: great_circle(point, centroid).m)
+			return tuple(centermost_point)
 
 		centermost_points = clusters.map(getCenter)
 
@@ -85,11 +92,7 @@ def clustering(data, lat, lon, radius):
 	'''
 
 
-
-
-
-
 if __name__ == '__main__':
-	app.run(debug=False)
+	app.run(debug=True)
 
 

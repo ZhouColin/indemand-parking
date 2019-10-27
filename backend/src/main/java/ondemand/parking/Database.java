@@ -18,6 +18,7 @@ public class Database {
     private HashMap<String, ParkingSpot> parkingSpots;
     private ArrayList<ChurnRecord> supply;
     private ArrayList<ChurnRecord> demand;
+    private static final double HEAT_MAP_RADIUS = 5;
 
     Database() {
         users = new HashMap<>();
@@ -89,18 +90,19 @@ public class Database {
                 data[1].add(d);
             }
         }
-        return getClusters(data);
+        return getClusters(data, lon, lat);
     }
 
     // TODO: Verify that clusters on supply are received
-    String getClusters(List<ChurnRecord>[] data) {
+    String getClusters(List<ChurnRecord>[] data, double lon, double lat) {
         HttpURLConnection conn = null;
         DataOutputStream os = null;
 
         String response = "";
         try {
             URL url = new URL("http://127.0.0.1:5000/data");
-            String json = new Gson().toJson(data);
+            HeatMapParamWrapper wrapper = new HeatMapParamWrapper(data, lon, lat, HEAT_MAP_RADIUS);
+            String json = new Gson().toJson(wrapper);
             byte[] postData = json.getBytes(StandardCharsets.UTF_8);
             conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
@@ -139,6 +141,20 @@ class ChurnRecord {
         this.lon = lon;
         this.lat = lat;
         this.time = time;
+    }
+}
+
+class HeatMapParamWrapper {
+    List<ChurnRecord>[] data;
+    double lon;
+    double lat;
+    double radius;
+
+    HeatMapParamWrapper(List<ChurnRecord>[] data, double lon, double lat, double radius) {
+        this.data = data;
+        this.lon = lon;
+        this.lat = lat;
+        this.radius = radius;
     }
 }
 
