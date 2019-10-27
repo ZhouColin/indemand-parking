@@ -18,6 +18,9 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	compile group: "com.twilio.sdk", name: "twilio", version: "7.17.+"
+	compile group: "com.sparkjava", name: "spark-core", version: "2.7.1"
+	compile group: "org.slf4j", name: "slf4j-simple", version: "1.7.21"
 }
 
 test {

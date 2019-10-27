@@ -68,6 +68,10 @@ public class Database {
         }
     }
 
+    List<User> getAllUsers() {
+        return (List<User>) users.values();
+    }
+
     // Load parking spots from ChurnRecords
     String findClusters(double lon, double lat, double radius) {
         ArrayList<ChurnRecord>[] data = new ArrayList[2];

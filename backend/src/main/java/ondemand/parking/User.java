@@ -1,5 +1,7 @@
 package ondemand.parking;
 
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,25 +13,30 @@ import java.util.*;
 @RestController
 public class User {
     static Database db = ParkingOnDemandApplication.db;
+    static final String twilioNumber = "+16464000794";
     String uID;
     String psID;
     double rating;
     double raters;
     ArrayList<String> psToRate;
+    String firstName;
+    String lastName;
+    String phoneNumber;
 
 
-    User() {
-    }
+    User() {}
 
-    User(String username, String password) {
+    User(String username, String password, String firstName, String lastName, String phoneNumber) {
         uID = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
         rating = 0;
         raters = 0;
         psID = "";
+        firstName = firstName;
+        lastName = lastName;
+        phoneNumber = phoneNumber;
+        psToRate = new ArrayList<String>();
 
         db.addUser(this);
-
-        psToRate = new ArrayList<String>();
     }
 
     public void setPsID(String psID) {
@@ -81,11 +88,13 @@ public class User {
 
     // Signup function, creates a new user if it is a valid username
     @GetMapping("/signup")
-    static ResponseEntity<String> signup(@RequestParam String username, @RequestParam String password) {
+    static ResponseEntity<String> signup(@RequestParam String username, @RequestParam String password,
+                                         @RequestParam String firstName, @RequestParam String lastName,
+                                         @RequestParam String phoneNumber) {
         String uID = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
 
         if (!db.userExists(uID)) {
-            db.addUser(new User(username, password));
+            db.addUser(new User(username, password, firstName, lastName, phoneNumber));
             return new ResponseEntity<>(uID, HttpStatus.OK);
         }
         return new ResponseEntity<>("Username In Use", HttpStatus.BAD_REQUEST);
@@ -149,5 +158,17 @@ public class User {
     static ResponseEntity<String> parkingClusters(@RequestParam double lon, @RequestParam double lat,
                                                   @RequestParam double radius) {
         return new ResponseEntity<>(db.findClusters(lon, lat, radius), HttpStatus.OK);
+    }
+
+    // TODO: Change text message to use reverseGeoCoding to return street address to user
+    static void textUsersToRate() {
+        for (User u: db.getAllUsers()) {
+            for (String psID: u.psToRate) {
+                ParkingSpot ps = db.getParkingSpot(psID);
+                Message message = Message.creator(new PhoneNumber(u.phoneNumber), new PhoneNumber(twilioNumber),
+                        "Please use the OnDemandParking app to rate your latest adventure at" +
+                                "Lon: " + ps.lon + " and lat: " + ps.lat).create();
+            }
+        }
     }
 }
