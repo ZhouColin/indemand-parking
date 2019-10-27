@@ -125,6 +125,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            to= "/maps"
           >
             Sign Up
           </Button>
