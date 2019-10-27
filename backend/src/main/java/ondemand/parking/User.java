@@ -2,17 +2,21 @@ package ondemand.parking;
 
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
+import org.jsoup.Jsoup;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @RestController
 public class User {
     static Database db = ParkingOnDemandApplication.db;
+    static StripeService stripeService = ParkingOnDemandApplication.stripeService;
     static final String twilioNumber = "+16464000794";
     String uID;
     String psID;
@@ -45,7 +49,8 @@ public class User {
 
     //reserve a parking spot
     @GetMapping("/reserve")
-    static ResponseEntity<String> reserve(@RequestParam String uID, @RequestParam String psID) {
+    static ResponseEntity<String> reserve(@RequestParam String uID, @RequestParam String psID,
+                                          @RequestParam String stripeToken) {
         User user = db.getUser(uID);
         ParkingSpot spot = db.getParkingSpot(psID);
 
@@ -54,6 +59,8 @@ public class User {
         }
         spot.taken = true;
         user.psToRate.add(psID);
+
+        stripeService.createCharge(stripeToken, spot.price);
 
         return new ResponseEntity<>(psID, HttpStatus.OK);
     }
@@ -125,6 +132,7 @@ public class User {
         String psID = UUID.randomUUID().toString();
 
         ParkingSpot spot = new ParkingSpot(psID, uID, lon, lat, time, duration, meterRate);
+        spot.price = ParkingSpot.recommendPrice(lon, lat, time);
         db.addParkingSpot(spot);
         user.setPsID(psID);
         db.addSupplyRecord(new ChurnRecord(lon, lat, time));
@@ -156,7 +164,18 @@ public class User {
     @GetMapping("/parkingClusters")
     static ResponseEntity<String> parkingClusters(@RequestParam double lon, @RequestParam double lat,
                                                   @RequestParam double radius) {
-        return new ResponseEntity<>(db.findClusters(lon, lat, radius), HttpStatus.OK);
+        String fileName = db.findClusters(lon, lat, radius);
+        if (fileName == "") {
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        }
+        File f = new File(fileName);
+        String content = "";
+        try {
+            content = Jsoup.parse(f, "UTF-8").toString();
+        } catch (IOException e) {
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(content, HttpStatus.OK);
     }
 
     // TODO: Change text message to use reverseGeoCoding to return street address to user

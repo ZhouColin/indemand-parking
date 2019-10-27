@@ -26,8 +26,8 @@ def getData():
 	lat = jsonData['lat']
 	radius = jsonData['radius']
 	# Modify this as needed for clustering
-	results = clustering(supply, demand, lon, lat, radius)
-	return make_response(jsonify(results), 200)
+	fileName = clustering(supply, demand, lon, lat, radius)
+	return fileName
 
 
 def clustering(supply, demand, lon, lat, radius):
@@ -42,11 +42,15 @@ def clustering(supply, demand, lon, lat, radius):
 
 		outputMap.add_child(hmap)
 
-		os.chdir("..\\backend\\heatmaps")
-		outputMap.save("lat" + str(lat) + "lon" + str(lon) + ".html")
+		if not os.path.exists("../backend/heatmaps"):
+			os.mkdir("../backend/heatmaps")
+
+		mapName = "../backend/heatmaps/lat" + str(lat) + "lon" + str(lon) + ".html"
+		outputMap.save(mapName)
+		return mapName
 
 
-	clusterHeatMap(supply)
+	return clusterHeatMap(supply)
 
 	'''
 	def findCluster(coordinateList):
