@@ -18,7 +18,6 @@ public class ParkingSpot {
         this.lon = lon;
         this.lat = lat;
         this.meterRate = meterRate;
-        this.price = price;
         this.time = time;
         this.duration = duration;
         this.taken = false;
@@ -34,6 +33,6 @@ public class ParkingSpot {
 
     // TODO: ML price recommendation
     static double recommendPrice(double lon, double lat, long time) {
-        return 0;
+        return 1.0;
     }
 }
