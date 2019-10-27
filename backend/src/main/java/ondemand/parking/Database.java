@@ -118,9 +118,11 @@ public class Database {
                         + conn.getResponseCode());
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    (conn.getInputStream())));
-            for (String line; (line = br.readLine()) != null; response += line) ;
+//            BufferedReader br = new BufferedReader(new InputStreamReader(
+//                    (conn.getInputStream())));
+            response = conn.getResponseMessage();
+            System.out.println(response);
+//            for (String line; (line = br.readLine()) != null; response += line) ;
             conn.disconnect();
         } catch (IOException ignored) {
         } finally {

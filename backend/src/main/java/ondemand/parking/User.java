@@ -161,7 +161,11 @@ public class User {
     @GetMapping("/parkingClusters")
     static ResponseEntity<String> parkingClusters(@RequestParam double lon, @RequestParam double lat,
                                                   @RequestParam double radius) {
-        return new ResponseEntity<>(db.findClusters(lon, lat, radius), HttpStatus.OK);
+        String fileName = db.findClusters(lon, lat, radius);
+        if (fileName == "") {
+            return new ResponseEntity<>("", HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(fileName, HttpStatus.OK);
     }
 
     // TODO: Change text message to use reverseGeoCoding to return street address to user
