@@ -2,12 +2,15 @@ package ondemand.parking;
 
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
+import org.jsoup.Jsoup;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -163,9 +166,16 @@ public class User {
                                                   @RequestParam double radius) {
         String fileName = db.findClusters(lon, lat, radius);
         if (fileName == "") {
-            return new ResponseEntity<>("", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(fileName, HttpStatus.OK);
+        File f = new File(fileName);
+        String content = "";
+        try {
+            content = Jsoup.parse(f, "UTF-8").toString();
+        } catch (IOException e) {
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(content, HttpStatus.OK);
     }
 
     // TODO: Change text message to use reverseGeoCoding to return street address to user
