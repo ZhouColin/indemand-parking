@@ -38,7 +38,7 @@ def clustering(supply, demand, lon, lat, radius):
 
 		coords = list(zip([c['lat'] for c in coordinateList], [c['lon'] for c in coordinateList], weights))
 		outputMap = folium.Map(location=[lat, lon])
-		hmap = HeatMap(coords, max_value = 1, min_opacity = .5)
+		hmap = HeatMap(coords, max_value = 3, min_opacity = .5)
 
 		outputMap.add_child(hmap)
 

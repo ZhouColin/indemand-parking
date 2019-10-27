@@ -189,4 +189,40 @@ public class User {
             }
         }
     }
+
+    @GetMapping("genTestSF")
+    static void generateTestDataSF() {
+        Random rand = new Random();
+        for (int i = 0; i < 1000; i++) {
+            String username = Integer.toString(rand.nextInt());
+            String password = Integer.toString(rand.nextInt());
+            User u = new User(username, password, "John", "Doe", "+18005555555");
+            String psID = UUID.randomUUID().toString();
+            double lon = -122.477438 + (-122.408863 - -122.477438) * rand.nextDouble();
+            double lat = 37.736980 + (37.791981 - 37.736980) * rand.nextDouble();
+            ParkingSpot spot = new ParkingSpot(psID, u.uID, lon, lat, 25, 100, 10);
+            spot.price = ParkingSpot.recommendPrice(lon, lat, 25);
+            db.addParkingSpot(spot);
+            u.setPsID(psID);
+            db.addSupplyRecord(new ChurnRecord(lon, lat, 25));
+        }
+    }
+
+    @GetMapping("genTestBerkeley")
+    static void generateTestDataBerkeley() {
+        Random rand = new Random();
+        for (int i = 0; i < 1000; i++) {
+            String username = Integer.toString(rand.nextInt());
+            String password = Integer.toString(rand.nextInt());
+            User u = new User(username, password, "John", "Doe", "+18005555555");
+            String psID = UUID.randomUUID().toString();
+            double lon = -122.291944 + (-122.259127 - -122.291944) * rand.nextDouble();
+            double lat = 37.855709 + (37.882149 - 37.855709) * rand.nextDouble();
+            ParkingSpot spot = new ParkingSpot(psID, u.uID, lon, lat, 25, 100, 10);
+            spot.price = ParkingSpot.recommendPrice(lon, lat, 25);
+            db.addParkingSpot(spot);
+            u.setPsID(psID);
+            db.addSupplyRecord(new ChurnRecord(lon, lat, 25));
+        }
+    }
 }
